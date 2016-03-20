@@ -10,14 +10,12 @@ import Foundation
 
 public extension CollectionType where Generator.Element: DictionaryRepresentable {
 	func dictionaryRepresentation() -> [NSDictionary] {
-		return self.map({ (item:Self.Generator.Element) -> NSDictionary in
-			item.dictionaryRepresentation()
-		})
+		return self.map{ $0.dictionaryRepresentation() }
 	}
 }
 
 public extension CollectionType where Generator.Element: NSDictionary {
 	func restoreItemsFromDictionaryRepresentation<T: DictionaryRepresentable>() -> [T] {
-		return self.flatMap{T(dictionaryRepresentation:$0)}
+		return self.flatMap{ T(dictionaryRepresentation:$0) }
 	}
 }
