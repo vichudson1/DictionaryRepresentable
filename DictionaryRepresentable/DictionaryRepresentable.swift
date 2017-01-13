@@ -21,7 +21,7 @@ public protocol DictionaryRepresentable {
 	
 	- returns: `Bool` indicating whether you were able to successfully extract and restore your Type's members from the dictionary. Returning false will cause the failable `init(dictionaryRepresentation: NSDictionary?)` to return nil.
 	*/
-	mutating func decode(dictionary dictionary:NSDictionary) -> Bool
+	mutating func decode(dictionary:NSDictionary) -> Bool
 
 	/**
 	This method must be defined in your conforming Type or in an extension of your Type. This is where you pack the values of your conforming Type's members into an `NSDictionary`.

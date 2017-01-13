@@ -9,30 +9,30 @@
 import Foundation
 
 protocol PlistArchivable: DictionaryRepresentable {
-	func saveToDocumentsDirectory(fileName fileName: String) -> Bool
+	func saveToDocumentsDirectory(fileName: String) -> Bool
 	
-	static func restoreFromFile<T: PlistArchivable>(fileName fileName: String) -> T?
+	static func restoreFromFile<T: PlistArchivable>(fileName: String) -> T?
 }
 
 extension PlistArchivable {
-	var fileManager: NSFileManager { return NSFileManager.defaultManager() }
+	var fileManager: FileManager { return FileManager.default }
 	
-	var documentsDirectory: NSURL {
-		return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+	var documentsDirectory: URL {
+		return fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
 	}
 	
-	func saveToDocumentsDirectory(fileName fileName: String) -> Bool {
-		let URL = documentsDirectory.URLByAppendingPathComponent(fileName)
-		return self.dictionaryRepresentation().writeToURL(URL, atomically: true)
+	func saveToDocumentsDirectory(fileName: String) -> Bool {
+		let URL = documentsDirectory.appendingPathComponent(fileName)
+		return self.dictionaryRepresentation().write(to: URL, atomically: true)
 	}
 	
-	static func restoreFromFile<T: PlistArchivable>(fileName fileName: String) -> T? {
+	static func restoreFromFile<T: PlistArchivable>(fileName: String) -> T? {
 		var instance = T()
-		let URL = instance.documentsDirectory.URLByAppendingPathComponent(fileName)
-		guard instance.fileManager.fileExistsAtPath(URL.relativePath!),
-			let archiveDictionary = NSDictionary(contentsOfURL: URL)
-			where instance.decode(dictionary: archiveDictionary) else {
-				print("No file at URL \(URL.relativePath!)")
+		let URL = instance.documentsDirectory.appendingPathComponent(fileName)
+		guard instance.fileManager.fileExists(atPath: URL.relativePath),
+			let archiveDictionary = NSDictionary(contentsOf: URL)
+			, instance.decode(dictionary: archiveDictionary) else {
+				print("No file at URL \(URL.relativePath)")
 				return nil
 		}
 		return instance

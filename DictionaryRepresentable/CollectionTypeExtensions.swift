@@ -8,13 +8,13 @@
 
 import Foundation
 
-public extension CollectionType where Generator.Element: DictionaryRepresentable {
+public extension Collection where Iterator.Element: DictionaryRepresentable {
 	func dictionaryRepresentation() -> [NSDictionary] {
 		return self.map{ $0.dictionaryRepresentation() }
 	}
 }
 
-public extension CollectionType where Generator.Element: NSDictionary {
+public extension Collection where Iterator.Element: NSDictionary {
 	func restoreItemsFromDictionaryRepresentation<T: DictionaryRepresentable>() -> [T] {
 		return self.flatMap{ T(dictionaryRepresentation:$0) }
 	}
