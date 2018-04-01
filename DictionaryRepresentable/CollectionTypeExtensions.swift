@@ -16,6 +16,6 @@ public extension Collection where Iterator.Element: DictionaryRepresentable {
 
 public extension Collection where Iterator.Element: NSDictionary {
 	func restoreItemsFromDictionaryRepresentation<T: DictionaryRepresentable>() -> [T] {
-		return self.flatMap{ T(dictionaryRepresentation:$0) }
+		return self.compactMap{ T(dictionaryRepresentation:$0) }
 	}
 }
